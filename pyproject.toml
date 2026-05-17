@@ -30,6 +30,10 @@ testpaths = ["tests"]
 line-length = 88
 target-version = "py312"
 
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = []
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
