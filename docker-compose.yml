@@ -15,5 +15,20 @@ services:
       timeout: 5s
       retries: 5
 
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgres://factflow:factflow@db:5432/factflow
+    depends_on:
+      db:
+        condition: service_healthy
+
 volumes:
   postgres_data:
