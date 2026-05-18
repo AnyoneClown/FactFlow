@@ -20,8 +20,7 @@ RUN poetry config virtualenvs.create false \
 COPY . /app/
 
 RUN chmod +x /app/entrypoint.sh
-RUN chmod +x /app/render-start.sh
 
 RUN poetry run python3 manage.py collectstatic --noinput
 
-CMD ["sh", "/app/render-start.sh"]
+CMD ["sh", "/app/entrypoint.sh"]
