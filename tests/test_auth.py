@@ -33,6 +33,13 @@ def test_login_page_renders_email_login_form(client):
     assert b"Email or username" in response.content
 
 
+def test_health_endpoint_is_public(client):
+    response = client.get("/health")
+
+    assert response.status_code == 200
+    assert response.json() == {"status": "ok"}
+
+
 @pytest.mark.django_db
 def test_user_can_login_with_email_and_logout(client, user):
     response = client.post(
