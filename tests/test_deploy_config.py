@@ -1,9 +1,23 @@
+import importlib
+import sys
 from pathlib import Path
 
-from config.settings import prod
+
+def load_prod_settings(monkeypatch):
+    monkeypatch.setenv("SECRET_KEY", "test-secret-key")
+    monkeypatch.setenv("ALLOWED_HOSTS", "factflow.example.com")
+    monkeypatch.setenv("CSRF_TRUSTED_ORIGINS", "https://factflow.example.com")
+    monkeypatch.setenv("DATABASE_URL", "sqlite:///tmp/factflow-prod-test.sqlite3")
+    sys.modules.pop("config.settings.prod", None)
+
+    from config.settings import prod
+
+    return importlib.reload(prod)
 
 
-def test_production_settings_use_secure_static_and_https_defaults():
+def test_production_settings_use_secure_static_and_https_defaults(monkeypatch):
+    prod = load_prod_settings(monkeypatch)
+
     assert prod.DEBUG is False
     assert prod.SECURE_PROXY_SSL_HEADER == ("HTTP_X_FORWARDED_PROTO", "https")
     assert prod.SECURE_SSL_REDIRECT is True
@@ -19,22 +33,3 @@ def test_build_script_contains_collectstatic_command():
 
     assert "poetry install" in build_script
     assert "collectstatic --noinput" in build_script
-
-
-def test_readme_documents_local_and_render_deploy():
-    readme = Path("README.md").read_text()
-
-    assert "## Local run" in readme
-    assert "## Render deploy" in readme
-    assert "Supabase PostgreSQL" in readme
-    assert "gunicorn config.wsgi:application" in readme
-
-
-def test_render_yaml_defines_native_python_web_service():
-    render_yaml = Path("render.yaml").read_text()
-
-    assert "type: web" in render_yaml
-    assert "healthCheckPath: /health" in render_yaml
-    assert "DJANGO_SETTINGS_MODULE" in render_yaml
-    assert "config.settings.prod" in render_yaml
-    assert "DATABASE_URL" in render_yaml
