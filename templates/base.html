@@ -4,34 +4,56 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}FactFlow{% endblock %}</title>
+    <title>{% block title %}FactFlow CRM{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
   </head>
   <body>
-    <main>
-      {% if request.user.is_authenticated %}
-        <nav>
+    {% if request.user.is_authenticated %}
+    <div class="crm-container">
+      <nav class="crm-nav">
+        <div class="crm-nav-header">
+          FactFlow
+        </div>
+        
+        <div class="nav-section">
+          <div class="nav-section-title">User</div>
           <a href="{% url 'crm:user_dashboard' %}">Dashboard</a>
-          <a href="{% url 'crm:upload' %}">Upload</a>
+          <a href="{% url 'crm:upload' %}">Upload File</a>
           <a href="{% url 'crm:statistics' %}">Statistics</a>
-          {% if crm_is_admin %}
-            <a href="{% url 'crm:admin_dashboard' %}">Admin Overview</a>
-            <a href="{% url 'crm:admin_upload_logs' %}">Upload Logs</a>
-            <a href="{% url 'crm:admin_users' %}">Users</a>
-            <a href="{% url 'crm:admin_imported_facts' %}">Imported Facts</a>
-          {% endif %}
-          <a href="{% url 'logout' %}">Logout</a>
-        </nav>
-      {% endif %}
-      {% if messages %}
-        <ul>
-          {% for message in messages %}
-            <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-      {% block content %}{% endblock %}
-    </main>
+        </div>
+
+        {% if crm_is_admin %}
+        <div class="nav-section">
+          <div class="nav-section-title">Admin</div>
+          <a href="{% url 'crm:admin_dashboard' %}">Admin Overview</a>
+          <a href="{% url 'crm:admin_upload_logs' %}">Upload Logs</a>
+          <a href="{% url 'crm:admin_users' %}">Users</a>
+          <a href="{% url 'crm:admin_imported_facts' %}">Imported Facts</a>
+        </div>
+        {% endif %}
+
+        <div style="flex-grow: 1;"></div>
+        
+        <div class="nav-section" style="margin-bottom: 0;">
+          <a href="{% url 'logout' %}" style="border-top: 1px solid rgba(255,255,255,0.1);">Logout ({{ request.user.username }})</a>
+        </div>
+      </nav>
+
+      <main class="crm-main">
+        {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+              <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+        
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+    {% else %}
+      {% block auth_content %}{% endblock %}
+    {% endif %}
     <script src="{% static 'js/main.js' %}"></script>
   </body>
 </html>
