@@ -30,11 +30,10 @@ def test_readme_documents_local_and_render_deploy():
     assert "gunicorn config.wsgi:application" in readme
 
 
-def test_render_yaml_defines_docker_web_service():
+def test_render_yaml_defines_native_python_web_service():
     render_yaml = Path("render.yaml").read_text()
 
     assert "type: web" in render_yaml
-    assert "runtime: docker" in render_yaml
     assert "healthCheckPath: /health" in render_yaml
     assert "DJANGO_SETTINGS_MODULE" in render_yaml
     assert "config.settings.prod" in render_yaml

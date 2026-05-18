@@ -1,9 +1,11 @@
 services:
   - type: web
     name: factflow
-    runtime: docker
+    runtime: python
     plan: free
     autoDeploy: true
+    buildCommand: ./build.sh
+    startCommand: poetry run python manage.py migrate --noinput && poetry run python -m gunicorn config.wsgi:application
     healthCheckPath: /health
     envVars:
       - key: DJANGO_SETTINGS_MODULE
