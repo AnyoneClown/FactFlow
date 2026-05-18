@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from config.settings import base
 from config.runtime import database_url_for_container
+from config.settings import base
 
 
 def test_database_url_for_container_rewrites_localhost_to_db():
