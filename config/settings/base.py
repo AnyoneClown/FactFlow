@@ -91,3 +91,6 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "crm:user_dashboard"
+LOGOUT_REDIRECT_URL = "login"
