@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 
 ADMIN_GROUP_NAME = "Admin"
@@ -18,3 +19,13 @@ def admin_required(view_func):
         return view_func(request, *args, **kwargs)
 
     return wrapped
+
+
+class AdminRequiredMixin(UserPassesTestMixin):
+    def test_func(self) -> bool:
+        return is_admin(self.request.user)
+
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            raise PermissionDenied
+        return super().handle_no_permission()

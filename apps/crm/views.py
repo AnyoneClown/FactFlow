@@ -1,43 +1,32 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
 
-from .roles import admin_required
-
-
-@login_required
-def user_dashboard(request):
-    return render(request, "crm/user_dashboard.html")
+from .roles import AdminRequiredMixin
 
 
-@login_required
-def upload(request):
-    return render(request, "crm/upload.html")
+class UserDashboardView(LoginRequiredMixin, TemplateView):
+    template_name = "crm/user_dashboard.html"
 
 
-@login_required
-def statistics(request):
-    return render(request, "crm/statistics.html")
+class UploadView(LoginRequiredMixin, TemplateView):
+    template_name = "crm/upload.html"
 
 
-@login_required
-@admin_required
-def admin_dashboard(request):
-    return render(request, "crm/dashboard.html")
+class StatisticsView(LoginRequiredMixin, TemplateView):
+    template_name = "crm/statistics.html"
 
 
-@login_required
-@admin_required
-def admin_upload_logs(request):
-    return render(request, "crm/upload_logs.html")
+class AdminDashboardView(LoginRequiredMixin, AdminRequiredMixin, TemplateView):
+    template_name = "crm/dashboard.html"
 
 
-@login_required
-@admin_required
-def admin_users(request):
-    return render(request, "crm/users.html")
+class AdminUploadLogsView(LoginRequiredMixin, AdminRequiredMixin, TemplateView):
+    template_name = "crm/upload_logs.html"
 
 
-@login_required
-@admin_required
-def admin_imported_facts(request):
-    return render(request, "crm/imported_facts.html")
+class AdminUsersView(LoginRequiredMixin, AdminRequiredMixin, TemplateView):
+    template_name = "crm/users.html"
+
+
+class AdminImportedFactsView(LoginRequiredMixin, AdminRequiredMixin, TemplateView):
+    template_name = "crm/imported_facts.html"
