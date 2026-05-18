@@ -19,6 +19,7 @@ poetry run python manage.py runserver
 ### Local Docker run
 
 ```bash
+cp .env.example .env
 docker compose up --build
 ```
 
@@ -36,7 +37,7 @@ Demo users loaded from `demo_data`:
 
 All seeded users use the password `factflow123`.
 
-Docker also ensures a superuser exists for `/admin/`:
+Docker also ensures a superuser exists for Django admin at `/django-admin/`:
 
 - email: `admin@example.com`
 - password: `admin12345`

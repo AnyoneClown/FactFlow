@@ -41,6 +41,15 @@ def test_health_endpoint_is_public(client):
 
 
 @pytest.mark.django_db
+def test_root_path_uses_crm_dashboard_route_for_authenticated_user(client, user):
+    client.force_login(user)
+
+    response = client.get("/")
+
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
 def test_user_can_login_with_email_and_logout(client, user):
     response = client.post(
         reverse("login"),

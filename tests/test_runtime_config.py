@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from config.settings import base
 from config.runtime import database_url_for_container
 
 
@@ -33,3 +34,8 @@ def test_docker_compose_does_not_force_database_url_override():
         "DATABASE_URL=postgres://factflow:factflow@db:5432/factflow"
         not in compose_text
     )
+
+
+def test_base_settings_expose_bootstrap_superuser_env_vars():
+    assert base.DJANGO_SUPERUSER_EMAIL == "admin@example.com"
+    assert base.DJANGO_SUPERUSER_PASSWORD == "admin12345"
