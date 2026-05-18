@@ -18,3 +18,5 @@ RUN poetry config virtualenvs.create false \
     && poetry install --no-interaction --no-ansi --no-root
 
 COPY . /app/
+
+RUN poetry run python3 manage.py collectstatic --noinput
