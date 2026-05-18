@@ -4,4 +4,30 @@
 
 {% block content %}
   <h1>Statistics</h1>
+  {% if showing_all_data %}
+    <p>Showing all imported data.</p>
+  {% else %}
+    <p>Showing your imported data.</p>
+  {% endif %}
+
+  <table>
+    <thead>
+      <tr>
+        <th>Year</th>
+        <th>Total Impr</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in yearly_totals %}
+        <tr>
+          <td>{{ row.start__year }}</td>
+          <td>{{ row.total_impr }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="2">No imported data yet.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

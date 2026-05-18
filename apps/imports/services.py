@@ -8,8 +8,9 @@ from pathlib import Path
 from typing import BinaryIO
 
 import pandas as pd
+from django.db import transaction
 
-from .models import UploadLog
+from .models import ImportedFact, UploadLog
 
 REQUIRED_COLUMNS = {
     "advertiser": "Advertiser",
@@ -61,6 +62,12 @@ class SpreadsheetParseError(ValueError):
         self.error_type = error_type
 
 
+@dataclass(frozen=True)
+class ImportResult:
+    upload_log: UploadLog
+    imported_count: int
+
+
 def parse_fact_file(
     file: str | Path | BinaryIO,
     filename: str | None = None,
@@ -85,6 +92,73 @@ def parse_fact_file(
     )
 
     return _parse_rows(raw_rows)
+
+
+def import_fact_file(user, uploaded_file) -> ImportResult:
+    filename = getattr(uploaded_file, "name", "upload")
+
+    try:
+        parsed = parse_fact_file(uploaded_file, filename)
+    except SpreadsheetParseError as exc:
+        upload_log = UploadLog.objects.create(
+            user=user,
+            original_filename=filename,
+            status=UploadLog.Status.FAILED,
+            error_type=exc.error_type,
+            error_message=str(exc),
+        )
+        return ImportResult(upload_log=upload_log, imported_count=0)
+
+    if parsed.success_rows == 0:
+        upload_log = UploadLog.objects.create(
+            user=user,
+            original_filename=filename,
+            status=UploadLog.Status.FAILED,
+            error_type=UploadLog.ErrorType.NO_VALID_ROWS,
+            error_message=_build_row_error_message(parsed),
+            total_rows=parsed.total_rows,
+            success_rows=0,
+            failed_rows=parsed.failed_rows,
+        )
+        return ImportResult(upload_log=upload_log, imported_count=0)
+
+    status = UploadLog.Status.SUCCESS
+    error_type = None
+    error_message = ""
+    if parsed.failed_rows:
+        status = UploadLog.Status.PARTIAL_SUCCESS
+        error_type = UploadLog.ErrorType.INVALID_ROW_DATA
+        error_message = _build_row_error_message(parsed)
+
+    with transaction.atomic():
+        upload_log = UploadLog.objects.create(
+            user=user,
+            original_filename=filename,
+            status=status,
+            error_type=error_type,
+            error_message=error_message,
+            total_rows=parsed.total_rows,
+            success_rows=parsed.success_rows,
+            failed_rows=parsed.failed_rows,
+        )
+        ImportedFact.objects.bulk_create(
+            [
+                ImportedFact(
+                    upload=upload_log,
+                    user=user,
+                    advertiser=row.advertiser,
+                    brand=row.brand,
+                    start=row.start,
+                    end=row.end,
+                    format=row.format,
+                    platform=row.platform,
+                    impr=row.impr,
+                )
+                for row in parsed.valid_rows
+            ]
+        )
+
+    return ImportResult(upload_log=upload_log, imported_count=parsed.success_rows)
 
 
 def _parse_rows(rows: list[list[object]]) -> ParseResult:
@@ -126,6 +200,13 @@ def _parse_rows(rows: list[list[object]]) -> ParseResult:
         valid_rows=valid_rows,
         row_errors=row_errors,
         total_rows=len(valid_rows) + len(row_errors),
+    )
+
+
+def _build_row_error_message(parsed: ParseResult) -> str:
+    return " | ".join(
+        f"Row {row_error.row_number}: {row_error.message}"
+        for row_error in parsed.row_errors
     )
 
 

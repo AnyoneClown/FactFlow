@@ -4,4 +4,24 @@
 
 {% block content %}
   <h1>Upload</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Upload</button>
+  </form>
+  <p>Accepted formats: .xlsx, .xls, .csv</p>
+
+  {% if latest_upload %}
+    <section>
+      <h2>Latest Upload</h2>
+      <p>Status: {{ latest_upload.status }}</p>
+      <p>Filename: {{ latest_upload.original_filename }}</p>
+      <p>Total rows: {{ latest_upload.total_rows }}</p>
+      <p>Success rows: {{ latest_upload.success_rows }}</p>
+      <p>Failed rows: {{ latest_upload.failed_rows }}</p>
+      {% if latest_upload.error_message %}
+        <p>{{ latest_upload.error_message }}</p>
+      {% endif %}
+    </section>
+  {% endif %}
 {% endblock %}
