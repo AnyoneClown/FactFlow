@@ -19,4 +19,6 @@ RUN poetry config virtualenvs.create false \
 
 COPY . /app/
 
+RUN chmod +x /app/entrypoint.sh
+
 RUN poetry run python3 manage.py collectstatic --noinput

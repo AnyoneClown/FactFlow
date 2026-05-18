@@ -257,6 +257,10 @@ ul {
   gap: 1rem;
 }
 
+.stats-grid--wide {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+
 .stat-card {
   padding: 1.25rem;
   background: var(--surface);
@@ -276,6 +280,17 @@ ul {
   font-size: 1.9rem;
   font-weight: 700;
   color: var(--text);
+}
+
+.stat-card__value--text {
+  font-size: 1.1rem;
+  line-height: 1.4;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
 }
 
 .card-title-row {
@@ -470,6 +485,12 @@ table.crm-table {
   border-bottom: 0;
 }
 
+.crm-table--compact th,
+.crm-table--compact td {
+  padding-top: 0.8rem;
+  padding-bottom: 0.8rem;
+}
+
 .table-meta {
   padding: 1rem 1.5rem 1.25rem;
   border-top: 1px solid var(--border);
@@ -542,6 +563,26 @@ table.crm-table {
   margin-top: 1rem;
 }
 
+.insight-card {
+  display: grid;
+  gap: 1rem;
+}
+
+.insight-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.insight-list__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  border-radius: 0.85rem;
+  background: var(--surface-muted);
+}
+
 .auth-shell {
   min-height: 100vh;
   display: grid;
@@ -594,6 +635,10 @@ table.crm-table {
 
   .content-shell {
     padding: 1.25rem;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
   }
 }
 

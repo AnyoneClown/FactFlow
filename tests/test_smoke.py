@@ -1,6 +1,7 @@
 from django.core.management import call_command
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from pathlib import Path
 
 
 def test_django_system_check_passes():
@@ -30,3 +31,15 @@ def test_authenticated_page_uses_shared_crm_shell(client, db):
     assert 'class="app-shell"' in content
     assert 'class="sidebar"' in content
     assert 'class="content-shell"' in content
+
+
+def test_docker_compose_runs_entrypoint_via_shell():
+    compose_text = Path("docker-compose.yml").read_text()
+
+    assert "command: sh /app/entrypoint.sh" in compose_text
+
+
+def test_docker_compose_overrides_database_url_for_container_network():
+    compose_text = Path("docker-compose.yml").read_text()
+
+    assert "DATABASE_URL=postgres://factflow:factflow@db:5432/factflow" not in compose_text

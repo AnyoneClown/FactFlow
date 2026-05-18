@@ -17,7 +17,7 @@ services:
 
   web:
     build: .
-    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command: sh /app/entrypoint.sh
     volumes:
       - .:/app
     ports:
@@ -25,7 +25,8 @@ services:
     env_file:
       - .env
     environment:
-      - DATABASE_URL=postgres://factflow:factflow@db:5432/factflow
+      - DJANGO_SUPERUSER_EMAIL=${DJANGO_SUPERUSER_EMAIL:-admin@example.com}
+      - DJANGO_SUPERUSER_PASSWORD=${DJANGO_SUPERUSER_PASSWORD:-admin12345}
     depends_on:
       db:
         condition: service_healthy

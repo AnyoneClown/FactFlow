@@ -6,7 +6,10 @@ import sys
 
 
 def main() -> None:
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.dev")
+    default_settings = "config.settings.dev"
+    if len(sys.argv) > 1 and sys.argv[1] == "check" and "--deploy" in sys.argv:
+        default_settings = "config.settings.prod"
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", default_settings)
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

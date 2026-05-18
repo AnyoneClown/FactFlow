@@ -15,31 +15,245 @@
     </p>
   </section>
 
-  <section class="table-card">
-    <div class="table-card__header">
-      <h2>Yearly totals</h2>
-    </div>
-    <div class="table-wrap">
-      <table class="crm-table">
-        <thead>
-          <tr>
-            <th>Year</th>
-            <th>Total impr</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for row in yearly_totals %}
-            <tr>
-              <td>{{ row.start__year }}</td>
-              <td>{{ row.total_impr }}</td>
-            </tr>
+  <div class="section-stack">
+    <section class="card">
+      <div class="card-title-row">
+        <h2>Performance snapshot</h2>
+      </div>
+      <div class="stats-grid stats-grid--wide">
+        <article class="stat-card">
+          <div class="stat-card__label">Total impr</div>
+          <div class="stat-card__value">{{ analytics_summary.total_impr }}</div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-card__label">Imported rows</div>
+          <div class="stat-card__value">{{ analytics_summary.total_rows }}</div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-card__label">Average impr per row</div>
+          <div class="stat-card__value">{{ analytics_summary.average_impr }}</div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-card__label">Tracked years</div>
+          <div class="stat-card__value">{{ analytics_summary.active_years }}</div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-card__label">Top brand</div>
+          <div class="stat-card__value stat-card__value--text">{{ analytics_summary.top_brand }}</div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-card__label">Top platform</div>
+          <div class="stat-card__value stat-card__value--text">{{ analytics_summary.top_platform }}</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="table-card">
+        <div class="table-card__header">
+          <h2>Yearly totals</h2>
+        </div>
+        <div class="table-wrap">
+          <table class="crm-table">
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th>Total impr</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in yearly_totals %}
+                <tr>
+                  <td>{{ row.start__year }}</td>
+                  <td>{{ row.total_impr }}</td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="2">No imported data yet.</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="card insight-card">
+        <div class="card-title-row">
+          <h2>Upload health</h2>
+        </div>
+        <div class="insight-list">
+          {% for row in upload_status_totals %}
+            <div class="insight-list__item">
+              <span class="status-badge {% if row.status == 'success' %}status-success{% elif row.status == 'partial_success' %}status-partial{% else %}status-failed{% endif %}">
+                {{ row.label }}
+              </span>
+              <strong>{{ row.count }}</strong>
+            </div>
           {% empty %}
-            <tr>
-              <td colspan="2">No imported data yet.</td>
-            </tr>
+            <p class="muted-text">No uploads yet.</p>
           {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </section>
+        </div>
+        {% if analytics_summary.best_year %}
+          <div class="summary-grid">
+            <div class="summary-item">
+              <span class="summary-item__label">Best year</span>
+              <span class="summary-item__value">{{ analytics_summary.best_year }}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-item__label">Best year total impr</span>
+              <span class="summary-item__value">{{ analytics_summary.best_year_total_impr }}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-item__label">Tracked uploads</span>
+              <span class="summary-item__value">{{ analytics_summary.total_uploads }}</span>
+            </div>
+          </div>
+        {% endif %}
+      </article>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="table-card">
+        <div class="table-card__header">
+          <h2>Top brands</h2>
+        </div>
+        <div class="table-wrap">
+          <table class="crm-table crm-table--compact">
+            <thead>
+              <tr>
+                <th>Brand</th>
+                <th>Total impr</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in top_brands %}
+                <tr>
+                  <td>{{ row.brand }}</td>
+                  <td>{{ row.total_impr }}</td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="2">No brand performance data.</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="table-card">
+        <div class="table-card__header">
+          <h2>Top platforms</h2>
+        </div>
+        <div class="table-wrap">
+          <table class="crm-table crm-table--compact">
+            <thead>
+              <tr>
+                <th>Platform</th>
+                <th>Total impr</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in top_platforms %}
+                <tr>
+                  <td>{{ row.platform }}</td>
+                  <td>{{ row.total_impr }}</td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="2">No platform performance data.</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="table-card">
+        <div class="table-card__header">
+          <h2>Top advertisers</h2>
+        </div>
+        <div class="table-wrap">
+          <table class="crm-table crm-table--compact">
+            <thead>
+              <tr>
+                <th>Advertiser</th>
+                <th>Total impr</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in top_advertisers %}
+                <tr>
+                  <td>{{ row.advertiser }}</td>
+                  <td>{{ row.total_impr }}</td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="2">No advertiser data.</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="table-card">
+        <div class="table-card__header">
+          <h2>Top formats</h2>
+        </div>
+        <div class="table-wrap">
+          <table class="crm-table crm-table--compact">
+            <thead>
+              <tr>
+                <th>Format</th>
+                <th>Total impr</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in top_formats %}
+                <tr>
+                  <td>{{ row.format }}</td>
+                  <td>{{ row.total_impr }}</td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="2">No format data.</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <section class="table-card">
+      <div class="table-card__header">
+        <h2>Monthly activity</h2>
+      </div>
+      <div class="table-wrap">
+        <table class="crm-table crm-table--compact">
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th>Total impr</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in monthly_totals %}
+              <tr>
+                <td>{{ row.month|date:"M Y" }}</td>
+                <td>{{ row.total_impr }}</td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td colspan="2">No monthly activity yet.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
 {% endblock %}

@@ -1,0 +1,257 @@
+[
+  {
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+      "name": "Admin",
+      "permissions": []
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 2,
+    "fields": {
+      "name": "User",
+      "permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$OeL72gwC3VANLGnmWgdPLr$D0hUW+ib6gJlor4Ps9/Xsvy6o6F9y2C7oF3eJPjcQ54=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Alex",
+      "last_name": "Admin",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-18T09:00:00Z",
+      "email": "admin@factflow.local",
+      "groups": [1],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$OeL72gwC3VANLGnmWgdPLr$D0hUW+ib6gJlor4Ps9/Xsvy6o6F9y2C7oF3eJPjcQ54=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Nina",
+      "last_name": "Analyst",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-18T09:05:00Z",
+      "email": "analyst@factflow.local",
+      "groups": [2],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "accounts.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$1000000$OeL72gwC3VANLGnmWgdPLr$D0hUW+ib6gJlor4Ps9/Xsvy6o6F9y2C7oF3eJPjcQ54=",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "Marta",
+      "last_name": "Manager",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2026-05-18T09:10:00Z",
+      "email": "manager@factflow.local",
+      "groups": [2],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "imports.uploadlog",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "original_filename": "q1_brand_lift.xlsx",
+      "uploaded_at": "2026-05-18T09:30:00Z",
+      "status": "success",
+      "error_type": null,
+      "error_message": "",
+      "total_rows": 3,
+      "success_rows": 3,
+      "failed_rows": 0
+    }
+  },
+  {
+    "model": "imports.uploadlog",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "original_filename": "video_campaign_april.csv",
+      "uploaded_at": "2026-05-18T09:45:00Z",
+      "status": "partial_success",
+      "error_type": "invalid_row_data",
+      "error_message": "Two rows were skipped because their dates were invalid.",
+      "total_rows": 4,
+      "success_rows": 2,
+      "failed_rows": 2
+    }
+  },
+  {
+    "model": "imports.uploadlog",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "original_filename": "summer_launch.xlsx",
+      "uploaded_at": "2026-05-18T10:00:00Z",
+      "status": "success",
+      "error_type": null,
+      "error_message": "",
+      "total_rows": 2,
+      "success_rows": 2,
+      "failed_rows": 0
+    }
+  },
+  {
+    "model": "imports.uploadlog",
+    "pk": 4,
+    "fields": {
+      "user": 1,
+      "original_filename": "legacy_export.xls",
+      "uploaded_at": "2026-05-18T10:15:00Z",
+      "status": "failed",
+      "error_type": "missing_required_columns",
+      "error_message": "The uploaded file did not contain the required Impr column.",
+      "total_rows": 0,
+      "success_rows": 0,
+      "failed_rows": 0
+    }
+  },
+  {
+    "model": "imports.importedfact",
+    "pk": 1,
+    "fields": {
+      "upload": 1,
+      "user": 2,
+      "advertiser": "Northwind",
+      "brand": "Northwind Prime",
+      "start": "2023-01-10",
+      "end": "2023-01-31",
+      "created_at": "2026-05-18T09:31:00Z",
+      "format": "Video",
+      "platform": "YouTube",
+      "impr": 125000
+    }
+  },
+  {
+    "model": "imports.importedfact",
+    "pk": 2,
+    "fields": {
+      "upload": 1,
+      "user": 2,
+      "advertiser": "Northwind",
+      "brand": "Northwind Prime",
+      "start": "2023-02-05",
+      "end": "2023-02-28",
+      "created_at": "2026-05-18T09:32:00Z",
+      "format": "Display",
+      "platform": "Meta",
+      "impr": 88000
+    }
+  },
+  {
+    "model": "imports.importedfact",
+    "pk": 3,
+    "fields": {
+      "upload": 1,
+      "user": 2,
+      "advertiser": "Aperture Labs",
+      "brand": "Portal Snacks",
+      "start": "2024-03-01",
+      "end": "2024-03-31",
+      "created_at": "2026-05-18T09:33:00Z",
+      "format": "Video",
+      "platform": "TikTok",
+      "impr": 156000
+    }
+  },
+  {
+    "model": "imports.importedfact",
+    "pk": 4,
+    "fields": {
+      "upload": 2,
+      "user": 2,
+      "advertiser": "Aperture Labs",
+      "brand": "Portal Snacks",
+      "start": "2024-04-01",
+      "end": "2024-04-20",
+      "created_at": "2026-05-18T09:46:00Z",
+      "format": "Story",
+      "platform": "Instagram",
+      "impr": 64000
+    }
+  },
+  {
+    "model": "imports.importedfact",
+    "pk": 5,
+    "fields": {
+      "upload": 2,
+      "user": 2,
+      "advertiser": "Aperture Labs",
+      "brand": "Portal Snacks",
+      "start": "2024-05-01",
+      "end": "2024-05-18",
+      "created_at": "2026-05-18T09:47:00Z",
+      "format": "Display",
+      "platform": "Google Ads",
+      "impr": 54000
+    }
+  },
+  {
+    "model": "imports.importedfact",
+    "pk": 6,
+    "fields": {
+      "upload": 3,
+      "user": 3,
+      "advertiser": "Stark Retail",
+      "brand": "Summer Spark",
+      "start": "2025-06-01",
+      "end": "2025-06-30",
+      "created_at": "2026-05-18T10:01:00Z",
+      "format": "Video",
+      "platform": "YouTube",
+      "impr": 205000
+    }
+  },
+  {
+    "model": "imports.importedfact",
+    "pk": 7,
+    "fields": {
+      "upload": 3,
+      "user": 3,
+      "advertiser": "Stark Retail",
+      "brand": "Summer Spark",
+      "start": "2025-07-01",
+      "end": "2025-07-31",
+      "created_at": "2026-05-18T10:02:00Z",
+      "format": "Display",
+      "platform": "Programmatic",
+      "impr": 132500
+    }
+  },
+  {
+    "model": "imports.importedfact",
+    "pk": 8,
+    "fields": {
+      "upload": 3,
+      "user": 3,
+      "advertiser": "Wayne Foods",
+      "brand": "Night Fuel",
+      "start": "2025-08-01",
+      "end": "2025-08-29",
+      "created_at": "2026-05-18T10:03:00Z",
+      "format": "Audio",
+      "platform": "Spotify",
+      "impr": 47000
+    }
+  }
+]

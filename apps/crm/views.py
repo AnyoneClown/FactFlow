@@ -1,9 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Sum
 from django.shortcuts import redirect
 from django.views.generic import FormView, ListView, TemplateView
 
+from apps.analytics.services import build_statistics_dashboard
 from apps.imports.models import ImportedFact, UploadLog
 from apps.imports.services import import_fact_file
 
@@ -73,11 +73,11 @@ class StatisticsView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         facts = ImportedFact.objects.all()
+        uploads = UploadLog.objects.all()
         if not is_admin(self.request.user):
             facts = facts.filter(user=self.request.user)
-        context["yearly_totals"] = facts.values("start__year").annotate(
-            total_impr=Sum("impr")
-        ).order_by("start__year")
+            uploads = uploads.filter(user=self.request.user)
+        context.update(build_statistics_dashboard(facts=facts, uploads=uploads))
         context["showing_all_data"] = is_admin(self.request.user)
         return context
 
