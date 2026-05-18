@@ -3,11 +3,38 @@
 {% block title %}Admin Dashboard | FactFlow{% endblock %}
 
 {% block content %}
-  <h1>Admin Dashboard</h1>
-  <p>Total uploads: {{ total_uploads }}</p>
-  <p>Successful imports: {{ success_uploads }}</p>
-  <p>Partial imports: {{ partial_success_uploads }}</p>
-  <p>Failed imports: {{ failed_uploads }}</p>
-  <p>Total users: {{ total_users }}</p>
-  <p>Total imported rows: {{ total_imported_rows }}</p>
+  <section class="page-header">
+    <span class="page-header__eyebrow">Admin</span>
+    <h1 class="page-header__title">Admin overview</h1>
+    <p class="page-header__description">
+      Platform summary for uploads, imported rows, and user activity across the whole workspace.
+    </p>
+  </section>
+
+  <section class="stats-grid">
+    <article class="stat-card">
+      <div class="stat-card__label">Total uploads</div>
+      <div class="stat-card__value">{{ total_uploads }}</div>
+    </article>
+    <article class="stat-card">
+      <div class="stat-card__label">Successful imports</div>
+      <div class="stat-card__value">{{ success_uploads }}</div>
+    </article>
+    <article class="stat-card">
+      <div class="stat-card__label">Partial imports</div>
+      <div class="stat-card__value">{{ partial_success_uploads }}</div>
+    </article>
+    <article class="stat-card">
+      <div class="stat-card__label">Failed imports</div>
+      <div class="stat-card__value">{{ failed_uploads }}</div>
+    </article>
+    <article class="stat-card">
+      <div class="stat-card__label">Total users</div>
+      <div class="stat-card__value">{{ total_users }}</div>
+    </article>
+    <article class="stat-card">
+      <div class="stat-card__label">Imported rows</div>
+      <div class="stat-card__value">{{ total_imported_rows }}</div>
+    </article>
+  </section>
 {% endblock %}

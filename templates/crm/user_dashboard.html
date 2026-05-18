@@ -3,21 +3,49 @@
 {% block title %}Dashboard | FactFlow{% endblock %}
 
 {% block content %}
-  <h1>Dashboard</h1>
-  <p>Total uploads: {{ total_uploads }}</p>
-  <p>Total imported rows: {{ total_imported_rows }}</p>
+  <section class="page-header">
+    <span class="page-header__eyebrow">Workspace</span>
+    <h1 class="page-header__title">Dashboard</h1>
+    <p class="page-header__description">
+      Review your upload activity and keep an eye on the imported rows currently available in FactFlow.
+    </p>
+  </section>
 
-  <section>
-    <h2>Recent Uploads</h2>
-    <ul>
+  <div class="section-stack">
+    <section class="stats-grid">
+      <article class="stat-card">
+        <div class="stat-card__label">Total uploads</div>
+        <div class="stat-card__value">{{ total_uploads }}</div>
+      </article>
+      <article class="stat-card">
+        <div class="stat-card__label">Imported rows</div>
+        <div class="stat-card__value">{{ total_imported_rows }}</div>
+      </article>
+    </section>
+
+    <section class="card">
+      <div class="card-title-row">
+        <h2>Recent uploads</h2>
+        <a class="btn btn-secondary" href="{% url 'crm:upload' %}">Upload new file</a>
+      </div>
+      <ul class="data-list">
       {% for upload in recent_uploads %}
-        <li>
-          {{ upload.original_filename }} - {{ upload.status }} -
-          {{ upload.success_rows }}/{{ upload.total_rows }}
+        <li class="data-list__item">
+          <div class="data-list__headline">
+            <span class="data-list__title">{{ upload.original_filename }}</span>
+            <span class="status-badge {% if upload.status == 'success' %}status-success{% elif upload.status == 'partial_success' %}status-partial{% else %}status-failed{% endif %}">
+              {{ upload.get_status_display }}
+            </span>
+          </div>
+          <div class="data-list__meta">
+            <span>{{ upload.success_rows }}/{{ upload.total_rows }} rows imported</span>
+            <span>{{ upload.uploaded_at|date:"M j, Y H:i" }}</span>
+          </div>
         </li>
       {% empty %}
-        <li>No uploads yet.</li>
+        <li class="data-list__item">No uploads yet. Use the upload page to import your first file.</li>
       {% endfor %}
-    </ul>
-  </section>
+      </ul>
+    </section>
+  </div>
 {% endblock %}

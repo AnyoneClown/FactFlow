@@ -29,6 +29,8 @@ def test_login_page_renders_email_login_form(client):
     assert response.status_code == 200
     assert b'name="username"' in response.content
     assert b'type="email"' in response.content
+    assert b'class="auth-shell"' in response.content
+    assert b"Email or username" in response.content
 
 
 @pytest.mark.django_db

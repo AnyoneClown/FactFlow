@@ -3,43 +3,57 @@
 {% block title %}Imported Facts | FactFlow{% endblock %}
 
 {% block content %}
-  <h1>Imported Facts</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>User</th>
-        <th>Upload</th>
-        <th>Brand</th>
-        <th>Advertiser</th>
-        <th>Start</th>
-        <th>End</th>
-        <th>Format</th>
-        <th>Platform</th>
-        <th>Impr</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for fact in facts %}
-        <tr>
-          <td>{{ fact.user.email }}</td>
-          <td>{{ fact.upload.original_filename }}</td>
-          <td>{{ fact.brand }}</td>
-          <td>{{ fact.advertiser }}</td>
-          <td>{{ fact.start }}</td>
-          <td>{{ fact.end }}</td>
-          <td>{{ fact.format }}</td>
-          <td>{{ fact.platform }}</td>
-          <td>{{ fact.impr }}</td>
-        </tr>
-      {% empty %}
-        <tr>
-          <td colspan="9">No imported facts.</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <section class="page-header">
+    <span class="page-header__eyebrow">Admin</span>
+    <h1 class="page-header__title">Imported facts</h1>
+    <p class="page-header__description">
+      Browse the normalized rows imported into FactFlow across all uploads and users.
+    </p>
+  </section>
 
-  {% if page_obj.paginator.num_pages > 1 %}
-    <p>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
-  {% endif %}
+  <section class="table-card">
+    <div class="table-card__header">
+      <h2>Imported data</h2>
+    </div>
+    <div class="table-wrap">
+      <table class="crm-table">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Upload</th>
+            <th>Brand</th>
+            <th>Advertiser</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Format</th>
+            <th>Platform</th>
+            <th>Impr</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for fact in facts %}
+            <tr>
+              <td>{{ fact.user.email }}</td>
+              <td>{{ fact.upload.original_filename }}</td>
+              <td>{{ fact.brand }}</td>
+              <td>{{ fact.advertiser }}</td>
+              <td>{{ fact.start|date:"Y-m-d" }}</td>
+              <td>{{ fact.end|date:"Y-m-d" }}</td>
+              <td>{{ fact.format }}</td>
+              <td>{{ fact.platform }}</td>
+              <td>{{ fact.impr }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="9">No imported facts.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+      <div class="table-meta">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</div>
+    {% endif %}
+  </section>
 {% endblock %}

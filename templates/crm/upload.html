@@ -3,25 +3,67 @@
 {% block title %}Upload | FactFlow{% endblock %}
 
 {% block content %}
-  <h1>Upload</h1>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Upload</button>
-  </form>
-  <p>Accepted formats: .xlsx, .xls, .csv</p>
+  <section class="page-header">
+    <span class="page-header__eyebrow">Import</span>
+    <h1 class="page-header__title">Upload file</h1>
+    <p class="page-header__description">
+      Upload spreadsheet data for processing. Accepted formats: `.xlsx`, `.xls`, and `.csv`.
+    </p>
+  </section>
 
-  {% if latest_upload %}
-    <section>
-      <h2>Latest Upload</h2>
-      <p>Status: {{ latest_upload.status }}</p>
-      <p>Filename: {{ latest_upload.original_filename }}</p>
-      <p>Total rows: {{ latest_upload.total_rows }}</p>
-      <p>Success rows: {{ latest_upload.success_rows }}</p>
-      <p>Failed rows: {{ latest_upload.failed_rows }}</p>
-      {% if latest_upload.error_message %}
-        <p>{{ latest_upload.error_message }}</p>
-      {% endif %}
+  <div class="section-stack">
+    <section class="form-card">
+      <div class="card-title-row">
+        <h2>Import data</h2>
+      </div>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="{{ form.file.id_for_label }}">Choose file</label>
+          {{ form.file }}
+          {% if form.file.errors %}
+            <ul class="field-errors">
+              {% for error in form.file.errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+          <p class="form-help">Use the prepared fact data export with the expected columns.</p>
+        </div>
+        <button type="submit" class="btn">Upload file</button>
+      </form>
     </section>
-  {% endif %}
+
+    {% if latest_upload %}
+      <section class="card">
+        <div class="card-title-row">
+          <h2>Latest upload</h2>
+          <span class="status-badge {% if latest_upload.status == 'success' %}status-success{% elif latest_upload.status == 'partial_success' %}status-partial{% else %}status-failed{% endif %}">
+            {{ latest_upload.get_status_display }}
+          </span>
+        </div>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <span class="summary-item__label">Filename</span>
+            <span class="summary-item__value">{{ latest_upload.original_filename }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-item__label">Total rows</span>
+            <span class="summary-item__value">{{ latest_upload.total_rows }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-item__label">Successful rows</span>
+            <span class="summary-item__value">{{ latest_upload.success_rows }}</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-item__label">Failed rows</span>
+            <span class="summary-item__value">{{ latest_upload.failed_rows }}</span>
+          </div>
+        </div>
+        {% if latest_upload.error_message %}
+          <p class="muted-text stack-top-sm">{{ latest_upload.error_message }}</p>
+        {% endif %}
+      </section>
+    {% endif %}
+  </div>
 {% endblock %}

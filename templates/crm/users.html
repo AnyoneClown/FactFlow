@@ -3,31 +3,45 @@
 {% block title %}Users | FactFlow{% endblock %}
 
 {% block content %}
-  <h1>Users</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>Email</th>
-        <th>Date Joined</th>
-        <th>Access Level</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for listed_user in users %}
-        <tr>
-          <td>{{ listed_user.email }}</td>
-          <td>{{ listed_user.date_joined }}</td>
-          <td>{{ listed_user.access_level }}</td>
-        </tr>
-      {% empty %}
-        <tr>
-          <td colspan="3">No users.</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <section class="page-header">
+    <span class="page-header__eyebrow">Admin</span>
+    <h1 class="page-header__title">Users</h1>
+    <p class="page-header__description">
+      View the people with access to FactFlow and their current access level.
+    </p>
+  </section>
 
-  {% if page_obj.paginator.num_pages > 1 %}
-    <p>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
-  {% endif %}
+  <section class="table-card">
+    <div class="table-card__header">
+      <h2>User directory</h2>
+    </div>
+    <div class="table-wrap">
+      <table class="crm-table">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Date joined</th>
+            <th>Access level</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for listed_user in users %}
+            <tr>
+              <td>{{ listed_user.email }}</td>
+              <td>{{ listed_user.date_joined|date:"M j, Y H:i" }}</td>
+              <td>{{ listed_user.access_level }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="3">No users.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+      <div class="table-meta">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</div>
+    {% endif %}
+  </section>
 {% endblock %}

@@ -3,31 +3,43 @@
 {% block title %}Statistics | FactFlow{% endblock %}
 
 {% block content %}
-  <h1>Statistics</h1>
-  {% if showing_all_data %}
-    <p>Showing all imported data.</p>
-  {% else %}
-    <p>Showing your imported data.</p>
-  {% endif %}
+  <section class="page-header">
+    <span class="page-header__eyebrow">Reporting</span>
+    <h1 class="page-header__title">Statistics</h1>
+    <p class="page-header__description">
+      {% if showing_all_data %}
+        Showing all imported data across the platform.
+      {% else %}
+        Showing statistics for the data you imported.
+      {% endif %}
+    </p>
+  </section>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Year</th>
-        <th>Total Impr</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for row in yearly_totals %}
-        <tr>
-          <td>{{ row.start__year }}</td>
-          <td>{{ row.total_impr }}</td>
-        </tr>
-      {% empty %}
-        <tr>
-          <td colspan="2">No imported data yet.</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <section class="table-card">
+    <div class="table-card__header">
+      <h2>Yearly totals</h2>
+    </div>
+    <div class="table-wrap">
+      <table class="crm-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Total impr</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in yearly_totals %}
+            <tr>
+              <td>{{ row.start__year }}</td>
+              <td>{{ row.total_impr }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="2">No imported data yet.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
 {% endblock %}

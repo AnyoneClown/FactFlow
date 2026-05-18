@@ -3,33 +3,36 @@
 {% block title %}Login - FactFlow CRM{% endblock %}
 
 {% block auth_content %}
-<div class="auth-container">
-  <div class="auth-header">
-    <h2 class="display-font">Login to FactFlow CRM</h2>
-  </div>
-  
-  {% if form.errors %}
-    <ul class="messages">
-      <li class="error">Your email and password didn't match. Please try again.</li>
-    </ul>
-  {% endif %}
-
-  <form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    <div class="form-group">
-      <label for="{{ form.email.id_for_label }}">Email</label>
-      <input type="email" name="{{ form.username.html_name }}" id="{{ form.username.id_for_label }}" class="form-control" required autofocus>
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="auth-card__header">
+      <h1>Sign in to FactFlow</h1>
+      <p>Use your account to upload data, review imports, and check CRM statistics.</p>
     </div>
-    <div class="form-group">
-      <label for="{{ form.password.id_for_label }}">Password</label>
-      <input type="password" name="{{ form.password.html_name }}" id="{{ form.password.id_for_label }}" class="form-control" required>
-    </div>
-    <button type="submit" class="btn" style="width: 100%; justify-content: center; margin-top: 16px;">Login</button>
-    <input type="hidden" name="next" value="{{ next|default:'' }}">
-  </form>
 
-  <div style="margin-top: 32px; text-align: center;">
-    <a href="{% url 'signup' %}" style="color: var(--muted-foreground); text-decoration: none; font-family: var(--font-mono); font-size: 0.875rem; transition: color 150ms;">Don't have an account? <span style="color: var(--foreground); text-decoration: underline; text-decoration-color: var(--accent);text-underline-offset: 4px;">Sign up</span></a>
+    {% if form.errors %}
+      <ul class="messages">
+        <li class="error">Your email or password did not match. Please try again.</li>
+      </ul>
+    {% endif %}
+
+    <form method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="{{ form.username.id_for_label }}">Email or username</label>
+        <input type="email" name="{{ form.username.html_name }}" id="{{ form.username.id_for_label }}" class="form-control" required autofocus>
+      </div>
+      <div class="form-group">
+        <label for="{{ form.password.id_for_label }}">Password</label>
+        <input type="password" name="{{ form.password.html_name }}" id="{{ form.password.id_for_label }}" class="form-control" required>
+      </div>
+      <button type="submit" class="btn">Log in</button>
+      <input type="hidden" name="next" value="{{ next|default:'' }}">
+    </form>
+
+    <div class="auth-card__actions">
+      <a href="{% url 'signup' %}">Need an account? Sign up</a>
+    </div>
   </div>
 </div>
 {% endblock %}

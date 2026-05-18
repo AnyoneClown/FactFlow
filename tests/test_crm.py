@@ -102,6 +102,9 @@ def test_user_dashboard_shows_only_current_users_recent_uploads(
     assert len(uploads) == 1
     assert uploads[0].original_filename == "recent.xlsx"
     content = response.content.decode()
+    assert 'class="page-header"' in content
+    assert 'class="stats-grid"' in content
+    assert 'class="data-list"' in content
     assert "recent.xlsx" in content
     assert "other.xlsx" not in content
 
@@ -150,6 +153,9 @@ def test_admin_dashboard_shows_global_counts(client, admin_user, user, second_us
     assert response.context["failed_uploads"] == 1
     assert response.context["total_users"] == 3
     assert response.context["total_imported_rows"] == 3
+    content = response.content.decode()
+    assert 'class="stats-grid"' in content
+    assert "Platform summary" in content
 
 
 @pytest.mark.django_db
@@ -174,7 +180,11 @@ def test_admin_upload_logs_page_lists_logs_with_pagination(client, admin_user, u
     assert page.paginator.count == 26
     assert page.paginator.num_pages == 2
     assert len(response.context["upload_logs"]) == 25
-    assert "file-25.xlsx" not in response.content.decode()
+    content = response.content.decode()
+    assert 'class="table-card"' in content
+    assert 'class="table-wrap"' in content
+    assert "Page 1 of 2" in content
+    assert "file-25.xlsx" not in content
 
 
 @pytest.mark.django_db
@@ -192,6 +202,7 @@ def test_admin_users_page_lists_users_with_access_levels(
     emails = {entry.email for entry in users}
     assert {admin_user.email, user.email, second_user.email}.issubset(emails)
     content = response.content.decode()
+    assert 'class="table-card"' in content
     assert admin_user.email in content
     assert user.email in content
     assert "Admin" in content
@@ -227,5 +238,31 @@ def test_admin_imported_facts_page_lists_all_facts_with_pagination(
     assert page.paginator.num_pages == 2
     assert len(response.context["facts"]) == 25
     content = response.content.decode()
+    assert 'class="table-card"' in content
+    assert 'class="table-wrap"' in content
     assert "Brand-0" in content
     assert "Brand-25" not in content
+
+
+@pytest.mark.django_db
+def test_upload_page_uses_structured_form_layout(client, user):
+    client.force_login(user)
+
+    response = client.get(reverse("crm:upload"))
+
+    assert response.status_code == 200
+    content = response.content.decode()
+    assert 'class="form-card"' in content
+    assert "Accepted formats" in content
+
+
+@pytest.mark.django_db
+def test_statistics_page_uses_shared_table_layout(client, user):
+    client.force_login(user)
+
+    response = client.get(reverse("crm:statistics"))
+
+    assert response.status_code == 200
+    content = response.content.decode()
+    assert 'class="table-card"' in content
+    assert 'class="crm-table"' in content
