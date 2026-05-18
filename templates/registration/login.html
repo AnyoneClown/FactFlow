@@ -5,28 +5,32 @@
 {% block auth_content %}
 <div class="auth-container">
   <div class="auth-header">
-    <h2>Login to FactFlow CRM</h2>
+    <h2 class="display-font">Login to FactFlow CRM</h2>
   </div>
   
   {% if form.errors %}
     <ul class="messages">
-      <li class="error">Your username/email and password didn't match. Please try again.</li>
+      <li class="error">Your email and password didn't match. Please try again.</li>
     </ul>
   {% endif %}
 
   <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
     <div class="form-group">
-      <label for="{{ form.username.id_for_label }}">Email or Username</label>
+      <label for="{{ form.email.id_for_label }}">Email</label>
       <input type="email" name="{{ form.username.html_name }}" id="{{ form.username.id_for_label }}" class="form-control" required autofocus>
     </div>
     <div class="form-group">
       <label for="{{ form.password.id_for_label }}">Password</label>
       <input type="password" name="{{ form.password.html_name }}" id="{{ form.password.id_for_label }}" class="form-control" required>
     </div>
-    <button type="submit" class="btn" style="width: 100%;">Login</button>
-    <input type="hidden" name="next" value="{{ next }}">
+    <button type="submit" class="btn" style="width: 100%; justify-content: center; margin-top: 16px;">Login</button>
+    <input type="hidden" name="next" value="{{ next|default:'' }}">
   </form>
+
+  <div style="margin-top: 32px; text-align: center;">
+    <a href="{% url 'signup' %}" style="color: var(--muted-foreground); text-decoration: none; font-family: var(--font-mono); font-size: 0.875rem; transition: color 150ms;">Don't have an account? <span style="color: var(--foreground); text-decoration: underline; text-decoration-color: var(--accent);text-underline-offset: 4px;">Sign up</span></a>
+  </div>
 </div>
 {% endblock %}
 
