@@ -1,0 +1,6 @@
+"""Test settings for FactFlow."""
+
+from .base import *  # noqa: F403
+
+DEBUG = True
+PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
