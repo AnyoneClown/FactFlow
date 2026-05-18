@@ -1,6 +1,5 @@
 from datetime import date
 from io import BytesIO
-from pathlib import Path
 
 import pandas as pd
 import pytest
@@ -179,10 +178,17 @@ def test_parse_file_collects_invalid_rows_without_failing_valid_rows():
     )
 
 
-def test_parse_test_workbook_fixture_does_not_crash():
-    fixture = Path(__file__).resolve().parents[1] / "Task. Fact data_test.xlsx"
+def test_parse_workbook_with_blank_dates_does_not_crash():
+    file_obj = make_workbook(
+        [
+            ["Acme", "RoadRunner", "", "2024-01-31", "Video", "YouTube", 500],
+            ["Acme", "RoadRunner", "2024-02-01", None, "Video", "YouTube", 600],
+        ],
+        headers=REQUIRED_HEADERS,
+    )
 
-    result = parse_fact_file(fixture, fixture.name)
+    result = parse_fact_file(file_obj, "facts.xlsx")
 
     assert result.total_rows > 0
     assert result.success_rows + result.failed_rows == result.total_rows
+    assert result.failed_rows == 2
