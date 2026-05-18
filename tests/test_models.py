@@ -44,6 +44,12 @@ def test_upload_log_defines_required_fields_and_choices():
     }
 
 
+def test_upload_log_has_explicit_table_and_display_names():
+    assert UploadLog._meta.db_table == "import_upload_logs"
+    assert UploadLog._meta.verbose_name == "upload log"
+    assert UploadLog._meta.verbose_name_plural == "upload logs"
+
+
 def test_imported_fact_defines_required_fields_and_indexes():
     assert {
         "id",
@@ -65,3 +71,9 @@ def test_imported_fact_defines_required_fields_and_indexes():
     assert {("start",), ("user",), ("upload",)}.issubset(
         index_field_names(ImportedFact)
     )
+
+
+def test_imported_fact_has_explicit_table_and_display_names():
+    assert ImportedFact._meta.db_table == "imported_facts"
+    assert ImportedFact._meta.verbose_name == "imported fact"
+    assert ImportedFact._meta.verbose_name_plural == "imported facts"

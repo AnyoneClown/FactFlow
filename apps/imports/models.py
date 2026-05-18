@@ -39,6 +39,11 @@ class UploadLog(models.Model):
     success_rows = models.PositiveIntegerField(default=0)
     failed_rows = models.PositiveIntegerField(default=0)
 
+    class Meta:
+        db_table = "import_upload_logs"
+        verbose_name = "upload log"
+        verbose_name_plural = "upload logs"
+
     def __str__(self) -> str:
         return f"{self.original_filename} ({self.status})"
 
@@ -60,6 +65,9 @@ class ImportedFact(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        db_table = "imported_facts"
+        verbose_name = "imported fact"
+        verbose_name_plural = "imported facts"
         indexes = [
             models.Index(fields=["start"]),
             models.Index(fields=["user"]),

@@ -11,6 +11,14 @@ def test_user_model_uses_email_as_login_identifier():
     assert User._meta.get_field("email").unique is True
 
 
+def test_user_model_has_explicit_table_and_display_names():
+    User = get_user_model()
+
+    assert User._meta.db_table == "accounts_users"
+    assert User._meta.verbose_name == "user"
+    assert User._meta.verbose_name_plural == "users"
+
+
 @pytest.mark.django_db
 def test_user_manager_creates_user_with_email_only():
     User = get_user_model()
