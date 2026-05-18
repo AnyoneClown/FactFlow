@@ -4,4 +4,38 @@
 
 {% block content %}
   <h1>Upload Logs</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Filename</th>
+        <th>Status</th>
+        <th>Error Type</th>
+        <th>Total Rows</th>
+        <th>Success Rows</th>
+        <th>Failed Rows</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for upload in upload_logs %}
+        <tr>
+          <td>{{ upload.user.email }}</td>
+          <td>{{ upload.original_filename }}</td>
+          <td>{{ upload.status }}</td>
+          <td>{{ upload.error_type|default:"-" }}</td>
+          <td>{{ upload.total_rows }}</td>
+          <td>{{ upload.success_rows }}</td>
+          <td>{{ upload.failed_rows }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="7">No upload logs.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if page_obj.paginator.num_pages > 1 %}
+    <p>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+  {% endif %}
 {% endblock %}

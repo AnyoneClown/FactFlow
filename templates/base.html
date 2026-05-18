@@ -9,6 +9,20 @@
   </head>
   <body>
     <main>
+      {% if request.user.is_authenticated %}
+        <nav>
+          <a href="{% url 'crm:user_dashboard' %}">Dashboard</a>
+          <a href="{% url 'crm:upload' %}">Upload</a>
+          <a href="{% url 'crm:statistics' %}">Statistics</a>
+          {% if crm_is_admin %}
+            <a href="{% url 'crm:admin_dashboard' %}">Admin Overview</a>
+            <a href="{% url 'crm:admin_upload_logs' %}">Upload Logs</a>
+            <a href="{% url 'crm:admin_users' %}">Users</a>
+            <a href="{% url 'crm:admin_imported_facts' %}">Imported Facts</a>
+          {% endif %}
+          <a href="{% url 'logout' %}">Logout</a>
+        </nav>
+      {% endif %}
       {% if messages %}
         <ul>
           {% for message in messages %}

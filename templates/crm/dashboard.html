@@ -4,4 +4,10 @@
 
 {% block content %}
   <h1>Admin Dashboard</h1>
+  <p>Total uploads: {{ total_uploads }}</p>
+  <p>Successful imports: {{ success_uploads }}</p>
+  <p>Partial imports: {{ partial_success_uploads }}</p>
+  <p>Failed imports: {{ failed_uploads }}</p>
+  <p>Total users: {{ total_users }}</p>
+  <p>Total imported rows: {{ total_imported_rows }}</p>
 {% endblock %}

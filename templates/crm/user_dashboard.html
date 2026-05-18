@@ -4,4 +4,20 @@
 
 {% block content %}
   <h1>Dashboard</h1>
+  <p>Total uploads: {{ total_uploads }}</p>
+  <p>Total imported rows: {{ total_imported_rows }}</p>
+
+  <section>
+    <h2>Recent Uploads</h2>
+    <ul>
+      {% for upload in recent_uploads %}
+        <li>
+          {{ upload.original_filename }} - {{ upload.status }} -
+          {{ upload.success_rows }}/{{ upload.total_rows }}
+        </li>
+      {% empty %}
+        <li>No uploads yet.</li>
+      {% endfor %}
+    </ul>
+  </section>
 {% endblock %}
