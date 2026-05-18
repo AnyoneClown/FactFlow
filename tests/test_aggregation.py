@@ -190,7 +190,7 @@ def test_statistics_page_builds_dashboard_sections_for_mixed_upload_health(
         failed_rows=1,
         error_type=UploadLog.ErrorType.INVALID_ROW_DATA,
     )
-    failed_upload = UploadLog.objects.create(
+    UploadLog.objects.create(
         user=user,
         original_filename="failed.xlsx",
         status=UploadLog.Status.FAILED,

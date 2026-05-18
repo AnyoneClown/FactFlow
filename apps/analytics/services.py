@@ -14,7 +14,9 @@ def build_statistics_dashboard(*, facts, uploads) -> dict:
     )
 
     top_brands = list(
-        facts.values("brand").annotate(total_impr=Sum("impr")).order_by("-total_impr", "brand")[:5]
+        facts.values("brand")
+        .annotate(total_impr=Sum("impr"))
+        .order_by("-total_impr", "brand")[:5]
     )
     top_platforms = list(
         facts.values("platform")
@@ -27,7 +29,9 @@ def build_statistics_dashboard(*, facts, uploads) -> dict:
         .order_by("-total_impr", "advertiser")[:5]
     )
     top_formats = list(
-        facts.values("format").annotate(total_impr=Sum("impr")).order_by("-total_impr", "format")[:5]
+        facts.values("format")
+        .annotate(total_impr=Sum("impr"))
+        .order_by("-total_impr", "format")[:5]
     )
     monthly_totals = list(
         facts.annotate(month=TruncMonth("start"))

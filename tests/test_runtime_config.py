@@ -29,4 +29,7 @@ def test_entrypoint_normalizes_database_url_for_container():
 def test_docker_compose_does_not_force_database_url_override():
     compose_text = Path("docker-compose.yml").read_text()
 
-    assert "DATABASE_URL=postgres://factflow:factflow@db:5432/factflow" not in compose_text
+    assert (
+        "DATABASE_URL=postgres://factflow:factflow@db:5432/factflow"
+        not in compose_text
+    )
